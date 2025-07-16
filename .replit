@@ -2,3 +2,88 @@ modules = ["cpp-clang14", "c-clang14", "nodejs-20", "lua-5.2", "python-3.12"]
 
 [nix]
 channel = "stable-24_05"
+
+[workflows]
+runButton = "Build Ardour"
+
+[[workflows.workflow]]
+name = "Build Ardour"
+author = 41080079
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf configure --optimize --prefix=/workspace/build/install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf build"
+
+[[workflows.workflow]]
+name = "Clean Build"
+author = 41080079
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf clean"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf configure --optimize --prefix=/workspace/build/install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf build"
+
+[[workflows.workflow]]
+name = "Debug Build"
+author = 41080079
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf configure --debug --prefix=/workspace/build/install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf build"
+
+[[workflows.workflow]]
+name = "Install Ardour"
+author = 41080079
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf install"
+
+[[workflows.workflow]]
+name = "Run Tests"
+author = 41080079
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf configure --test --prefix=/workspace/build/install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf build"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf test"
+
+[[workflows.workflow]]
+name = "Build Documentation"
+author = 41080079
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf configure --docs --prefix=/workspace/build/install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python waf build"
